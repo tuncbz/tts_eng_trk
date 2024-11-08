@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesli Yazı Yazma</title>
+    <style>
+        body {
+            background-color: #2c2c2c; /* Karanlık arka plan */
+            color: #f1f1f1; /* Açık metin rengi */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em; /* Başlık font boyutu */
+            margin-bottom: 10px;
+        }
+        textarea {
+            width: 80%;
+            height: 150px;
+            font-size: 1.5em; /* Metin kutusu font boyutu */
+            padding: 10px;
+            background-color: #444; /* Koyu metin kutusu */
+            border: 1px solid #888;
+            color: #f1f1f1; /* Açık yazı rengi */
+            border-radius: 5px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.5em;
+            background-color: #4CAF50; /* Yeşil buton */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #45a049; /* Buton hover rengi */
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            textarea {
+                width: 90%;
+                font-size: 1.2em;
+            }
+            button {
+                width: 100%;
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sesli Yazı Yazma</h1>
+    <p>Başlamak için butona tıklayın ve konuşun. Sesiniz metne dönüştürülecek!</p>
+
+    <!-- Textbox -->
+    <textarea id="textbox" placeholder="Buraya sesli yazın..." readonly></textarea><br><br>
+
+    <!-- Buttons for Turkish and English -->
+    <button onclick="startListening('tr-TR')">Türkçe Konuşmaya Başla</button>
+    <button onclick="startListening('en-US')">Start Speaking in English</button>
+
+    <script>
+        // SpeechRecognition API'yi kontrol et
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.interimResults = true; // Ara sonuçları almak için
+
+        // Ses tanıma işlemi başladığında
+        recognition.onstart = function() {
+            console.log("Dinleme başladı...");
+        };
+
+        // Ses tanıma tamamlandığında
+        recognition.onresult = function(event) {
+            let transcript = event.results[event.resultIndex][0].transcript; // Sonuç metni
+            document.getElementById("textbox").value = transcript; // Textbox'a yazdır
+        };
+
+        // Dinlemeyi başlatan fonksiyon
+        function startListening(language) {
+            recognition.lang = language; // Dil seçimi
+            recognition.start(); // Tanıma başlat
+        }
+    </script>
+
+</body>
+</html>
